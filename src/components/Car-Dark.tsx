@@ -8,6 +8,6 @@ export default function CarDark({slot} : {slot: slotType}) {
     const {aviable} = slot;
     return(
         <div>
-            <Image src={aviable ? "/car.png" : "/car-yellow.png"} alt="Imagen de un coche"width={500} height={300} />
+            <Image className=" drop-shadow-xl shadow-black hover:opacity-85 hover:cursor-pointer hover:scale-110 ease-linear transition-all" src={aviable ? "/car.png" : "/car-yellow.png"} alt="Imagen de un coche" width={80} height={50} />
         </div>
     )}
