@@ -24,7 +24,7 @@ export default function LayoutCarDetails({
                         </Link>
                     ))}
                 </div>
-         <div className='w-[40%] rounded-xl bg-[#F1C40F] h-[100%] p-2'>
+         <div className=' w-96 rounded-xl bg-[#F1C40F] h-[100%] p-2'>
             {children}
          </div>
          </div>
