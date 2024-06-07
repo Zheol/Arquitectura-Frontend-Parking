@@ -17,7 +17,7 @@ interface ModalLoginProps {
 
 const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
     const router = useRouter()
-    const [emailStorage, setEmailStorage] = useState<string | null>(localStorage.getItem('email'));
+    // const [emailStorage, setEmailStorage] = useState<string | null>(localStorage.getItem('email'));
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -49,11 +49,11 @@ const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
             });
             console.log(response.data);
             handleClose();
-            setEmailStorage(response.data.email);
-            localStorage.setItem("email", response.data.email);
-            localStorage.setItem("id", response.data.id);
-            localStorage.setItem("role", response.data.role);
-            localStorage.setItem("name", response.data.name);
+            // setEmailStorage(response.data.email);
+            // localStorage.setItem("email", response.data.email);
+            // localStorage.setItem("id", response.data.id);
+            // localStorage.setItem("role", response.data.role);
+            // localStorage.setItem("name", response.data.name);
 
             console.log(response.data.role)
             router.push('/Admin/');

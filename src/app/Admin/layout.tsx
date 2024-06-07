@@ -15,7 +15,7 @@ export default function Layout({
     const router = useRouter();
 
     const handleLogOut = () => {
-        localStorage.removeItem('email');
+        // localStorage.removeItem('email');
         router.push('/');
     }
     return(

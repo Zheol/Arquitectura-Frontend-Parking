@@ -7,14 +7,14 @@ import ModalLogin from "../login/modal-login";
 export default function NavBar() {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
-    const [email, setEmail] = useState<string | null>(localStorage.getItem('email'));
+    const [email, setEmail] = useState<string | null>("juan.nilo@gmail.com");
 
-    useEffect(() => {
-        if (localStorage.getItem('email')) {
-            setIsLogin(true);
-            console.log(localStorage.getItem('email'))
-        }
-    }, [localStorage.getItem('email')])
+    // useEffect(() => {
+    //     if (localStorage.getItem('email')) {
+    //         setIsLogin(true);
+    //         console.log(localStorage.getItem('email'))
+    //     }
+    // }, [localStorage.getItem('email')])
     const closeModalLogin = () => {
         setIsOpenModal(false);
     }
