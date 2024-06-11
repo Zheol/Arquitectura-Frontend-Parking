@@ -6,6 +6,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FaPlus, FaPlusCircle } from 'react-icons/fa';
 
+interface Zona
+{
+  id: number;
+  nombre_zona: string;
+  cant_estacionamientos_totales: number;
+  cant_estacionamientos_ocupados: number;
+}
 
 export default function LayoutCarDetails({
   children,
@@ -14,10 +21,32 @@ export default function LayoutCarDetails({
 }>) {
   const slots = parkingSlots;
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedZone, setSelectedZone] = useState(1);
+  // Quiero un selector de zona que reciba una zona del tipo zona
+  const [selectedZone, setSelectedZone] = useState<Zona | null>(null);
   const closeModalLogin = () => {
     setModalOpen(false);
 }
+  const zonas = [
+    {
+      id: 1, 
+      nombre_zona : 'Zona 1',
+      cant_estacionamientos_totales: 20,
+      cant_estacionamientos_ocupados: 16
+    },
+    {
+      id: 2, 
+      nombre_zona : 'Zona 2',
+      cant_estacionamientos_totales: 20,
+      cant_estacionamientos_ocupados: 10
+    },
+    {
+      id: 3, 
+      nombre_zona : 'Zona 3',
+      cant_estacionamientos_totales: 20,
+      cant_estacionamientos_ocupados: 6
+    }
+  ]
+
   return (
     <main className='w-[100%] flex gap-10'> 
        <ModalRegisterCar isOpen={modalOpen} onClose={closeModalLogin} />
@@ -27,18 +56,22 @@ export default function LayoutCarDetails({
         {/* Sector de autos */}
         {/* Zonas de parking */}
         <div className="flex flex-row gap-2">
-          <button onClick={() => { setSelectedZone(1) }} className={` ${selectedZone == 1 ? "bg-yellow-300" : 'bg-white'}  w-10 h-10 rounded-full flex justify-center items-center`}><p className='font-bold'>1</p></button>
-          <button onClick={() => { setSelectedZone(2) }} className={` ${selectedZone == 2 ? "bg-yellow-300" : 'bg-white'}  w-10 h-10 rounded-full flex justify-center items-center`}><p className='font-bold'>2</p></button>
-          <button onClick={() => { setSelectedZone(3) }} className={` ${selectedZone == 3 ? "bg-yellow-300" : 'bg-white'}  w-10 h-10 rounded-full flex justify-center items-center`}><p className='font-bold'>3</p></button>
+          {
+            zonas.map((zona, index) => {
+              return (
+                <button key={index} onClick={() => { setSelectedZone(zona) }} className={` ${selectedZone?.id == zona.id ? "bg-yellow-300" : 'bg-white'}  w-10 h-10 rounded-full flex justify-center items-center`}><p className='font-bold'>{zona.id}</p></button>
+              )
+            })
+          }
         </div>
         <div className=' flex gap-x-4 my-4 justify-between'>
           <div className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >
-            <p className='text-4xl font-bold'> 20</p>
+            <p className='text-4xl font-bold'> {selectedZone?.cant_estacionamientos_totales}</p>
             <p>Espacios totales</p>
           </div>
           <div className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >
-            <p className='text-4xl font-bold'> 4</p>
-            <p>Espacios disponibles</p>
+            <p className='text-4xl font-bold'> {selectedZone?.cant_estacionamientos_ocupados}</p>
+            <p>Espacios ocupados</p>
           </div>
           <button onClick={()=> {setModalOpen(!modalOpen)}} className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >
             <FaPlus size={45} />
