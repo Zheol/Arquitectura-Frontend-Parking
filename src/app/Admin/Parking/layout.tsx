@@ -1,6 +1,7 @@
 'use client'
 import CarDark from '@/components/Car-Dark';
-import ModalRegisterCar from '@/components/modal-register-car';
+import ModalCreateZone from '@/components/modal/modal-create-zone';
+import ModalRegisterCar from '@/components/modal/modal-register-car';
 import parkingSlots from '@/mocks/ParkingSlots';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -21,11 +22,16 @@ export default function LayoutCarDetails({
 }>) {
   const slots = parkingSlots;
   const [modalOpen, setModalOpen] = useState(false);
-  // Quiero un selector de zona que reciba una zona del tipo zona
+  const [modalOpenZone, setModalOpenZone] = useState(false);
+
   const [selectedZone, setSelectedZone] = useState<Zona | null>(null);
   const closeModalLogin = () => {
     setModalOpen(false);
 }
+
+  const closeModalZone = () => {
+    setModalOpenZone(false);
+  }
   const zonas = [
     {
       id: 1, 
@@ -50,19 +56,25 @@ export default function LayoutCarDetails({
   return (
     <main className='w-[100%] flex gap-10'> 
        <ModalRegisterCar isOpen={modalOpen} onClose={closeModalLogin} />
-
+      <ModalCreateZone isOpen={modalOpenZone} onClose={closeModalZone} />
       <aside className='w-[70%] h-[100%]'>
         <h1 className=" text-5xl font-bold text-black">Parking Slots</h1>
         {/* Sector de autos */}
         {/* Zonas de parking */}
-        <div className="flex flex-row gap-2">
-          {
-            zonas.map((zona, index) => {
-              return (
-                <button key={index} onClick={() => { setSelectedZone(zona) }} className={` ${selectedZone?.id == zona.id ? "bg-yellow-300" : 'bg-white'}  w-10 h-10 rounded-full flex justify-center items-center`}><p className='font-bold'>{zona.id}</p></button>
-              )
-            })
-          }
+        <div className='flex justify-between items-center'>
+          <div className="flex flex-row gap-2">
+            {
+              zonas.map((zona, index) => {
+                return (
+                  <button key={index} onClick={() => { setSelectedZone(zona) }} className={` ${selectedZone?.id == zona.id ? "bg-yellow-300" : 'bg-white'}  w-10 h-10 rounded-full flex justify-center items-center`}><p className='font-bold'>{zona.id}</p></button>
+                )
+              })
+            }
+          </div>
+          <button onClick={()=> {setModalOpenZone(!modalOpenZone)}} className=' font-bold bg-yellow-300 p-2  border-black border-2 rounded-lg flex items-center justify-between gap-2'>
+            <FaPlusCircle size={32} />
+            <p>Crear zona</p>
+          </button>
         </div>
         <div className=' flex gap-x-4 my-4 justify-between'>
           <div className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >

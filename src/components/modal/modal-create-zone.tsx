@@ -1,34 +1,29 @@
 "use client";
-
 import axios from "axios";
 import React, { useState } from "react";
 import { BsFillBackspaceReverseFill } from "react-icons/bs";
-import { useUserStore } from "@/store/UserStorage";
 
 interface ModalSigninProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
+const ModalCreateZone: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
     const [name, setName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [cantEstacionamientosTotales, setCantEstacionamientosTotales] = useState<string>('0');
+    const [cantEstacionamientosOcupados, setCantEstacionamientosOcupados] = useState<string>('0');
 
-    const { setIdUser, setEmailUser } = useUserStore();
 
     const handleClose = () => {
         onClose();
     };
-    const fetchSigin = async (name: string, email: string, password: string) => {
+    const fetchZone = async (name: string, cantEstacionamientosTotales: string, cantEstacionamientosOcupados: string) => {
         try {
             const response = await axios.post(`https://backend-plataforma.onrender.com/api/register`, {
-                email: email,
-                password: password,
                 name: name,
+                cantEstacionamientosTotales: cantEstacionamientosTotales,
+                cantEstacionamientosOcupados: cantEstacionamientosOcupados,
             });
-            setIdUser(response.data.id);
-            setEmailUser(response.data.email);
             handleClose();
         } catch (error) {
             console.log(error);
@@ -40,44 +35,43 @@ const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
                     <div className="fixed inset-0 transition-opacity"></div>
-                    <div className="z-50 h-[70%] w-[60%] p-4 mx-auto bg-white rounded-md shadow-lg grid grid-cols-3 gap-4">
-                        <div className="col-span-1 flex flex-col">
+                    <div className="z-50 h-[70%] w-[40%]  p-4 mx-auto bg-white rounded-md shadow-lg flex justify-center items-center gap-4">
+                    
+                        <section className="col-span-1 flex flex-col w-[70%]">
                             <div className="flex justify-start">
                                 <button onClick={handleClose}>
                                     <BsFillBackspaceReverseFill size={35} color='emerald' />
                                 </button>
                             </div>
                             <div className="flex flex-col justify-center my-auto items-center">
-                                <div className='text-black font-bold text-2xl flex items-center'>Registro</div>
+                                <div className='text-black font-bold flex items-center my-10 text-4xl'>Crear zona</div>
                                     <input
                                         type="text"
-                                        placeholder="Nombre"
+                                        placeholder="Nombre de zona"
                                         className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
                                         onChange={(event) => setName(event.target.value)} />
 
                                     <input
-                                        type="email"
-                                        placeholder="Correo Electrónico"
+                                        type="text"
+                                        placeholder="Estacionamientos totales"
                                         className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
-                                        onChange={(event) => setEmail(event.target.value)} />
+                                        onChange={(event) => setCantEstacionamientosTotales(event.target.value)} />
 
                                     <input
-                                        type="password"
-                                        placeholder="Contraseña"
+                                        type="text"
+                                        placeholder="Estacionamientos ocupados"
                                         className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
-                                        onChange={(event) => setPassword(event.target.value)} />
+                                        onChange={(event) => setCantEstacionamientosOcupados(event.target.value)} />
 
 
-                                    <button className="bg-blue-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchSigin(name, email, password)}>Registrarse</button>
+                                    <button className="bg-blue-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchZone(name, cantEstacionamientosTotales, cantEstacionamientosOcupados)}>Crear zona</button>
                             </div>
-                        </div>
-                        <div className="col-span-2 flex flex-col justify-center items-center rounded-md p-3">
-                            <img src={'/background-reg.jpg'} alt="login" className="w-full h-full" />
-                        </div>
+                        </section>
+                        
                     </div>
                 </div>
             )}
         </>
     );
 };
-export default ModalSignin;
+export default ModalCreateZone;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { BsFillBackspaceFill } from "react-icons/bs";
 import ModalSignin from './modal-sigin';
-// import { useUserStore } from '@/store/userStorage';
+import { useUserStore } from '@/store/UserStorage';
 
 
 import { useRouter } from 'next/navigation'
@@ -17,8 +17,7 @@ interface ModalLoginProps {
 
 const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
     const router = useRouter()
-    // const [emailStorage, setEmailStorage] = useState<string | null>(localStorage.getItem('email'));
-
+    const { setIdUser, setEmailUser, setTipoUser, setToken } = useUserStore();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
@@ -49,11 +48,9 @@ const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
             });
             console.log(response.data);
             handleClose();
-            // setEmailStorage(response.data.email);
-            // localStorage.setItem("email", response.data.email);
-            // localStorage.setItem("id", response.data.id);
-            // localStorage.setItem("role", response.data.role);
-            // localStorage.setItem("name", response.data.name);
+            setIdUser(response.data.id);
+            setEmailUser(response.data.email);
+            setTipoUser(response.data.role);
 
             console.log(response.data.role)
             router.push('/Admin/');
@@ -72,6 +69,7 @@ const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
         <>
             {isOpen && (
                 <div className="fixed inset-0 z-20 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
+                    <ModalSignin isOpen={isModalSigninOpen} onClose={closeModalSignin} />
                     <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-70"></div>
                     <div className="z-20 h-[70%] w-[50%] p-4 mx-auto bg-white rounded-md shadow-lg grid grid-cols-3 gap-4">
                         <div className="col-span-2 flex flex-col justify-center items-center p-3">
@@ -96,7 +94,7 @@ const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
                                     className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
                                     onChange={(event) => setPassword(event.target.value)} />
                                 <button disabled={loginLoading} className="bg-yellow-500 text-black p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchLogin(email, password)}>{loginLoading ? 'Cargando...' : 'Iniciar Sesión'}</button>
-                                
+                                <button className="bg-blue-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={openModalSignin}>Registrarse</button>
                             {isError ? (
                                 <div className='h-12'></div>
                             ) : (

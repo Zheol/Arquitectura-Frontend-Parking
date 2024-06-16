@@ -1,5 +1,5 @@
 'use client';
-import ModalRegisterCar from "@/components/modal-register-car"
+import ModalRegisterCar from "@/components/modal/modal-register-car"
 import Card from "@/components/ui/Card"
 import ListaReservas from "@/components/user/ListaReservas"
 import Link from "next/link"

@@ -17,8 +17,9 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
     const router = useRouter()
     // const [emailStorage, setEmailStorage] = useState<string | null>(localStorage.getItem('email'));
 
-    const [plate, setPlate] = useState<string>('');
-    const [rut, setRut] = useState<string>('');
+    const [patente, setPatente] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+
 
     const [isModalSigninOpen, setIsModalSigninOpen] = useState<boolean>(false);
     const [loginLoading, setLoginLoading] = useState<boolean>(false);
@@ -66,7 +67,7 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
                 <div className="fixed inset-0 z-20 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
                     <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-50"></div>
                     <div className="relative z-30 h-[90%] w-[60%] p-4 mx-auto bg-white rounded-md shadow-lg flex items-center justify-center">
-                        <div className="absolute inset-0 bg-cover bg-center bg-gradient-to-r from-transparent via-white to-white  z-10" style={{ backgroundImage: "url('/background-register.jpg')" }}></div>
+                        <div className="absolute inset-0 bg-cover bg-center blur-smte bg-gradient-to-r from-transparent via-white to-white  z-10" style={{ backgroundImage: "url('/background-register.jpg')" }}></div>
                         <div className="relative z-20 w-[50%] p-10 ">
                             <div className="flex justify-end">
                                 <button onClick={handleClose}>
@@ -82,15 +83,13 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
                                     type="text"
                                     placeholder="Patente"
                                     className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
-                                    onChange={(event) => setPlate(event.target.value)} />
+                                    onChange={(event) => setPatente(event.target.value)} />
                                 <input
                                     type="text"
-                                    placeholder="Rut"
+                                    placeholder="Email"
                                     className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
-                                    onChange={(event) => setRut(event.target.value)} />
-                                {/* Input de dia */}
-                                <input type="date" id="llegada" name="llegada" min="2024-06-10" max="2024-12-31"
-                                    className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full" placeholder='Fecha de llegada' required />
+                                    onChange={(event) => setEmail(event.target.value)} />
+                            
                                 {/* Input de horas */}
                                 <input type="time" id="llegada" name="llegada" min="06:00" max="20:00"
                                     className="p-2 mx-5 my-2 border border-gray-300 rounded-md  font-semibold w-full text-gray-500" placeholder='Hora de llegada' required />
