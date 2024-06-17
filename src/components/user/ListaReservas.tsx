@@ -48,20 +48,30 @@ export default function ListaReservas({id} : {id: number}) {
     ]
 
     return (
-         <section className="w-[100%] mt-4 ">
-                <h2 className="text-3xl">Mis reservas:</h2>
-                {
-                    reservas.map((reserva) => (
-                        <div key={reserva.id} className="bg-white p-4 my-4 rounded-lg border-2  border-gray-500">
-                            <Link href={`/User/Parking/${reserva.id}`}>
-                                <p>Patente: {reserva.patente}</p>
-                                <p>Fecha inicio: {reserva.fecha_inicio}</p>
-                                <p>Hora inicio: {reserva.hora_inicio}</p>
-                                <p>Zona: {reserva.idZona}</p>
-                            </Link>
-                        </div>
-                    ))
-                }
-            </section>
+        <section className="w-[100%] mt-4 ">
+            <h2 className="text-3xl">Mis reservas:</h2>
+            <table className=" w-[100%] h-[50vh] bg-white overflow-scroll rounded-lg">
+                <thead className="bg-yellow-500 h-12">
+                    <tr>
+                        <th>Patente</th>
+                        <th>Fecha inicio</th>
+                        <th>Hora inicio</th>
+                        <th>Zona</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {reservas.map((reserva) => (
+                        <tr key={reserva.id} className="text-center max-h-14 ">
+                            <td>{reserva.patente}</td>
+                            <td>{reserva.fecha_inicio}</td>
+                            <td>{reserva.hora_inicio}</td>
+                            <td>{reserva.idZona}</td>
+                            <td><button className="bg-blue-500 text-white p-2 rounded-lg font-bold">CheckOut</button></td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </section>
     )
 }

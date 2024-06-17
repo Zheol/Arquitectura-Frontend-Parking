@@ -3,11 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { use, useState, useEffect } from "react";
 import ModalLogin from "../login/modal-login";
+import { useUserStore } from "@/store/UserStorage";
 
 export default function NavBar() {
+    const {id_user, email_user, clearUser} = useUserStore();
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
-    const [email, setEmail] = useState<string | null>("juan.nilo@gmail.com");
 
     const closeModalLogin = () => {
         setIsOpenModal(false);
@@ -15,7 +15,6 @@ export default function NavBar() {
 
     return (
         <nav className="h-16 w-[100%] bg-slate-800">
-            <ModalLogin isOpen={isOpenModal} onClose={closeModalLogin} />
             <div className="flex items-center justify-between h-full px-4">
                 <Link href={'/'} className="flex items-center w-[10%] justify-around">
                     <Image src="/parking.png" alt="logo" width={50} height={50} />
@@ -23,21 +22,16 @@ export default function NavBar() {
                 </Link>
 
                 {
-                    isLogin ?
+                    id_user != -1 &&
                         (
                             <div className="flex items-center gap-4">
-                                <Link className="bg-yellow-400 p-2 px-5 rounded-lg" href={'/Admin'}>
-                                    <p className=" text-slate-800 font-bold">{email}</p>
-                                </Link>
-                            </div>)
-                        :
-                        (
-                            <div className="flex items-center gap-4">
-                                <button  onClick={() => setIsOpenModal(true)}>
-                                    <p className="text-white">Login</p>
+                                <button onClick={clearUser} className="bg-yellow-400 p-2 px-5 rounded-lg" >
+                                    <p className=" text-slate-800 font-bold">
+                                        Cerrar Sesión
+                                    </p>
                                 </button>
-                            </div>
-                        )
+                            </div>)
+                        
 
                 }
 

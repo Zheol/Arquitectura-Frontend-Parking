@@ -8,16 +8,11 @@ import { useUserStore } from '@/store/UserStorage';
 
 import { useRouter } from 'next/navigation'
 
-interface ModalLoginProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
 
 
-
-const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
+const ModalLogin = () => {
     const router = useRouter()
-    const { setIdUser, setEmailUser, setTipoUser, setToken } = useUserStore();
+    const { setIdUser, setEmailUser, setTipoUser, setToken, tipoUser } = useUserStore();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
@@ -27,13 +22,13 @@ const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
     const [isError, setIsError] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
-    const handleClose = () => {
-        onClose();
-    };
+    const [isOpen, setIsOpen] = useState<boolean>(true);
     const openModalSignin = () => {
+        setIsOpen(false);
         setIsModalSigninOpen(true);
     };
     const closeModalSignin = () => {
+        setIsOpen(true);
         setIsModalSigninOpen(!isModalSigninOpen);
     };
 
@@ -47,14 +42,16 @@ const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
                 password: password
             });
             console.log(response.data);
-            handleClose();
+            
             setIdUser(response.data.id);
             setEmailUser(response.data.email);
             
-            setToken(response.data.token);
+            // setToken(response.data.token);
 
             console.log(response.data.role)
-            router.push('/Admin/');
+            if(tipoUser == '1'){
+                router.push('/Admin/');
+            }
             setLoginLoading(false);
 
         }
@@ -68,20 +65,14 @@ const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
 
     return (
         <>
-            {isOpen && (
-                <div className="fixed inset-0 z-20 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
-                    <ModalSignin isOpen={isModalSigninOpen} onClose={closeModalSignin} />
-                    <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-70"></div>
-                    <div className="z-20 h-[70%] w-[50%] p-4 mx-auto bg-white rounded-md shadow-lg grid grid-cols-3 gap-4">
-                        <div className="col-span-2 flex flex-col justify-center items-center p-3">
-                            <img src={'/backgroundLogin.webp'} alt="login" className="w-full h-full" />
-                        </div>
+        <ModalSignin isOpen={isModalSigninOpen} onClose={closeModalSignin} />
+          {
+            isOpen && (
+          
+                <div className="">
+                    <div className="">
+                      
                         <div className="col-span-1 flex flex-col">
-                            <div className="flex justify-end">
-                                <button onClick={handleClose}>
-                                    <BsFillBackspaceFill size={35} color='black' />
-                                </button>
-                            </div>
                             <div className="flex flex-col justify-center my-auto items-center">
                                 <div className='text-black font-bold text-2xl flex items-center'>Bienvenido</div>
                                 <input

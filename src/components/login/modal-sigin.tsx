@@ -20,6 +20,10 @@ const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
     const handleClose = () => {
         onClose();
     };
+
+    const openModalLogin = () => {
+        onClose();
+    }
     const fetchSigin = async (name: string, email: string, password: string) => {
         try {
             const response = await axios.post(`https://backend-plataforma.onrender.com/api/register`, {
@@ -38,15 +42,10 @@ const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
     return (
         <>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
-                    <div className="fixed inset-0 transition-opacity"></div>
-                    <div className="z-50 h-[70%] w-[60%] p-4 mx-auto bg-white rounded-md shadow-lg grid grid-cols-3 gap-4">
+                <div className="">
+                   
+                    <div className="">
                         <div className="col-span-1 flex flex-col">
-                            <div className="flex justify-start">
-                                <button onClick={handleClose}>
-                                    <BsFillBackspaceReverseFill size={35} color='emerald' />
-                                </button>
-                            </div>
                             <div className="flex flex-col justify-center my-auto items-center">
                                 <div className='text-black font-bold text-2xl flex items-center'>Registro</div>
                                     <input
@@ -68,11 +67,9 @@ const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
                                         onChange={(event) => setPassword(event.target.value)} />
 
 
-                                    <button className="bg-blue-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchSigin(name, email, password)}>Registrarse</button>
+                                    <button className="bg-yellow-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchSigin(name, email, password)}>Registrarse</button>
+                                    <button className="bg-blue-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={openModalLogin}>Iniciar sesion</button>
                             </div>
-                        </div>
-                        <div className="col-span-2 flex flex-col justify-center items-center rounded-md p-3">
-                            <img src={'/background-reg.jpg'} alt="login" className="w-full h-full" />
                         </div>
                     </div>
                 </div>
