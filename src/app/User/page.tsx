@@ -7,12 +7,20 @@ import { IoMdAddCircle } from "react-icons/io"
 import { FaPlus, FaUser } from "react-icons/fa"
 import { useState } from "react"
 import { MdLocalParking } from "react-icons/md";
+import axios from 'axios';
+import { useUserStore } from "@/store/UserStorage";
 
 export default function Page() {
     const [modalOpen, setModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const closeModalLogin = () => {
         setModalOpen(false);
     }
+
+    
+
 
     return (
 
@@ -31,7 +39,7 @@ export default function Page() {
                 </Link>
                 <button onClick={() => { setModalOpen(!modalOpen) }} className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >
                     <FaPlus size={45} />
-                    <p>Ingresar auto</p>
+                    <p>Crear reserva</p>
                 </button>
             </div>
             <div className="flex justify-center items-center">

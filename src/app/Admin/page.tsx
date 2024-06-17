@@ -11,12 +11,6 @@ export default function Admin() {
 
     const ADMIN_ITEMS = [
         {
-            title: "Dashboard",
-            path: "/Admin/Dashboard",
-            description: "Revisa los datos del parking.",
-            icon: <ImStatsBars size={34} color="black" />,
-        },
-        {
             title: "Parking",
             path: "/Admin/Parking",
             description: "Revisa los datos del parking.",

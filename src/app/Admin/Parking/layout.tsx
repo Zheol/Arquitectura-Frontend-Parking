@@ -71,23 +71,20 @@ export default function LayoutCarDetails({
               })
             }
           </div>
-          <button onClick={()=> {setModalOpenZone(!modalOpenZone)}} className=' font-bold bg-yellow-300 p-2  border-black border-2 rounded-lg flex items-center justify-between gap-2'>
-            <FaPlusCircle size={32} />
-            <p>Crear zona</p>
-          </button>
+            { selectedZone?.id ? null : (<p className='font-bold'>Seleccione una zona para ver la info.</p>)}
         </div>
         <div className=' flex gap-x-4 my-4 justify-between'>
           <div className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >
-            <p className='text-4xl font-bold'> {selectedZone?.cant_estacionamientos_totales}</p>
+            <p className='text-4xl font-bold'> {selectedZone?.cant_estacionamientos_totales || "-"}</p>
             <p>Espacios totales</p>
           </div>
           <div className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >
-            <p className='text-4xl font-bold'> {selectedZone?.cant_estacionamientos_ocupados}</p>
+            <p className='text-4xl font-bold'> {selectedZone?.cant_estacionamientos_ocupados || '-'}</p>
             <p>Espacios ocupados</p>
           </div>
-          <button onClick={()=> {setModalOpen(!modalOpen)}} className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >
+          <button onClick={()=> {setModalOpenZone(!modalOpenZone)}} className='rounded-lg  hover:cursor-pointer  transform transition-transform duration-500 hover:scale-110  border-2 bg-white border-gray-500 shadow-md h-24 w-48  flex flex-col items-center justify-center' >
             <FaPlus size={45} />
-            <p>Ingresar auto</p>
+            <p>Crear zona</p>
           </button>
         </div>
         <div className='h-[60vh] overflow-scroll bg-white p-4 rounded-lg border-2 border-gray-500'>

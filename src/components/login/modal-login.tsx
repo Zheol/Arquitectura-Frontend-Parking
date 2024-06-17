@@ -50,7 +50,8 @@ const ModalLogin: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
             handleClose();
             setIdUser(response.data.id);
             setEmailUser(response.data.email);
-            setTipoUser(response.data.role);
+            
+            setToken(response.data.token);
 
             console.log(response.data.role)
             router.push('/Admin/');

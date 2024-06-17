@@ -27,12 +27,6 @@ export default function Layout({
                 {/* Links */}
                 <div className=" block justify-center p-2 gap-y-4 text-xl text-white">
                     
-                    
-                    <Link href={'/Admin/Dashboard'} className="flex items-center gap-x-4 hover:bg-slate-600 p-2 rounded-xl">
-                        <AiFillFund size={32}/>
-                        <h2>Dashboard</h2>
-                    </Link>
-
                     <Link href={'/Admin/Parking'} className="flex items-center gap-x-4 hover:bg-slate-600 p-2 rounded-xl">
                         <LuParkingCircle size={32}/>
                         <h2>Parking</h2>

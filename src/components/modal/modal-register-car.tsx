@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { BsFillBackspaceFill } from "react-icons/bs";
-
+import { useUserStore } from '@/store/UserStorage';
 
 import { useRouter } from 'next/navigation'
 
@@ -15,14 +15,15 @@ interface ModalLoginProps {
 
 const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
     const router = useRouter()
-    // const [emailStorage, setEmailStorage] = useState<string | null>(localStorage.getItem('email'));
 
+    const {id_user, token} = useUserStore();
     const [patente, setPatente] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-
+    const [dateHourStart, setDateHourStart] = useState<string>('');
+    const [idZone, setIdZone] = useState<number>(1);
 
     const [isModalSigninOpen, setIsModalSigninOpen] = useState<boolean>(false);
-    const [loginLoading, setLoginLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [isError, setIsError] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -38,25 +39,26 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
     };
 
 
-    const fetchRegister = async (email: string, password: string) => {
-        setLoginLoading(true);
+    const fetchCreateBooking = async (dateHourStart: string ,patente: string, idZone: number) => {
+        setLoading(true);
         setIsError(false);
         try {
             const response = await axios.post(`https://backend-plataforma.onrender.com/api/login`, {
-                email: email,
-                password: password
+                dateHourStart: dateHourStart,
+                patente: patente,
+                idZone: idZone,
+                idUser: id_user,
+
             });
             console.log(response.data);
-            handleClose();
             console.log(response.data.role)
-            router.push('/Admin/');
-            setLoginLoading(false);
+            setLoading(false);
 
         }
         catch (error) {
-            setLoginLoading(false);
+            setLoading(false);
             setIsError(true);
-            setErrorMessage("Error al iniciar sesión, intente de nuevo.");
+            setErrorMessage("Error al crear reserva, intente de nuevo.");
             console.log("Error: ", error);
         };
     };
@@ -67,7 +69,7 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
                 <div className="fixed inset-0 z-20 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
                     <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-50"></div>
                     <div className="relative z-30 h-[90%] w-[60%] p-4 mx-auto bg-white rounded-md shadow-lg flex items-center justify-center">
-                        <div className="absolute inset-0 bg-cover bg-center blur-smte bg-gradient-to-r from-transparent via-white to-white  z-10" style={{ backgroundImage: "url('/background-register.jpg')" }}></div>
+                        <div className="absolute inset-0 bg-cover blur-sm bg-center blur-smte bg-gradient-to-r from-transparent via-white to-white  z-10" style={{ backgroundImage: "url('/background-register.jpg')" }}></div>
                         <div className="relative z-20 w-[50%] p-10 ">
                             <div className="flex justify-end">
                                 <button onClick={handleClose}>
@@ -84,11 +86,6 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
                                     placeholder="Patente"
                                     className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
                                     onChange={(event) => setPatente(event.target.value)} />
-                                <input
-                                    type="text"
-                                    placeholder="Email"
-                                    className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
-                                    onChange={(event) => setEmail(event.target.value)} />
                             
                                 {/* Input de horas */}
                                 <input type="time" id="llegada" name="llegada" min="06:00" max="20:00"
@@ -99,7 +96,7 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
                                     <option value="2">Zona 2</option>
                                     <option value="3">Zona 3</option>
                                 </select>
-                                <button disabled={loginLoading} className="bg-yellow-500 text-black p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchRegister(plate, rut)}>{loginLoading ? 'Cargando...' : 'Registrar auto'}</button>
+                                <button disabled={loading} className="bg-yellow-500 text-black p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchCreateBooking(dateHourStart, patente, idZone)}>{loading ? 'Cargando...' : 'Registrar auto'}</button>
                                 {isError && (
                                     <div className="flex justify-center items-center h-12 text-red-500 font-bold">
                                         {errorMessage}
