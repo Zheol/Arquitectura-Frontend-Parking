@@ -6,10 +6,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useUserStore } from "@/store/UserStorage";
+import ModalRegisterCar from "@/components/modal/modal-register-car";
 
 export default function Home() {
 
   const { id_user } = useUserStore();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const hanldeCloseModal = () => {
+    setIsOpen(false);
+  }
   console.log(id_user)
   return (
     <div className="h-[100%]">
@@ -44,7 +50,12 @@ export default function Home() {
                   <section className="h-[100%] w-[100%] bg-opacity-40 m-10">
           
               <ListaReservas id={id_user} />
-              
+              <div className="w-[100%] flex justify-center my-6">
+                <button onClick={() => setIsOpen(!isOpen)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Reservar
+                </button>
+              </div>
+              <ModalRegisterCar isOpen={isOpen} onClose={hanldeCloseModal} />
             
           </section>
           )

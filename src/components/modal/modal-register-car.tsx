@@ -1,6 +1,6 @@
 "use client";
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsFillBackspaceFill } from "react-icons/bs";
 import { useUserStore } from '@/store/UserStorage';
 
@@ -38,6 +38,20 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
         setIsModalSigninOpen(!isModalSigninOpen);
     };
 
+    const [currentTime, setCurrentTime] = useState('');
+    
+
+    useEffect(() => {
+        axios.get('http://worldtimeapi.org/api/timezone/America/Santiago')
+            .then(response => {
+                const datetime = new Date(response.data.datetime);
+                setDateHourStart(datetime.toISOString());
+                const time =  datetime.getDate() + '/' + datetime.getMonth() + '/' + datetime.getFullYear() + ' - ' + datetime.getHours() + ':' + datetime.getMinutes() ;
+                setCurrentTime(time);
+
+            })
+            .catch(error => console.error('Error fetching time: ', error));
+    }, []);
 
     const fetchCreateBooking = async (dateHourStart: string ,patente: string, idZone: number) => {
         setLoading(true);
@@ -68,8 +82,8 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
             {isOpen && (
                 <div className="fixed inset-0 z-20 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
                     <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-50"></div>
-                    <div className="relative z-30 h-[90%] w-[60%] p-4 mx-auto bg-white rounded-md shadow-lg flex items-center justify-center">
-                        <div className="absolute inset-0 bg-cover blur-sm bg-center blur-smte bg-gradient-to-r from-transparent via-white to-white  z-10" style={{ backgroundImage: "url('/background-register.jpg')" }}></div>
+                    <div className="relative z-30 h-[90%] w-[60%] p-4 mx-auto bg-black bg-opacity-50 rounded-md shadow-lg flex items-center justify-center">
+                        <div className="absolute inset-0 bg-cover blur-sm bg-center  z-10" style={{ backgroundImage: "url('/background-register.jpg')" }}></div>
                         <div className="relative z-20 w-[50%] p-10 ">
                             <div className="flex justify-end">
                                 <button onClick={handleClose}>
@@ -84,12 +98,13 @@ const ModalRegisterCar: React.FC<ModalLoginProps> = ({ isOpen, onClose }) => {
                                 <input
                                     type="text"
                                     placeholder="Patente"
+                                    maxLength={6}
                                     className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
                                     onChange={(event) => setPatente(event.target.value)} />
                             
                                 {/* Input de horas */}
-                                <input type="time" id="llegada" name="llegada" min="06:00" max="20:00"
-                                    className="p-2 mx-5 my-2 border border-gray-300 rounded-md  font-semibold w-full text-gray-500" placeholder='Hora de llegada' required />
+                                <input type="text" disabled={false} id="llegada" name="llegada" min="06:00" max="20:00"
+                                    className="p-2 mx-5 my-2 border border-gray-300 rounded-md  font-semibold w-full text-gray-500" placeholder={currentTime} value={currentTime}  />
                                 {/* selector de zona 1, zona 2 y zona 3 */}
                                 <select className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full">
                                     <option value="1">Zona 1</option>

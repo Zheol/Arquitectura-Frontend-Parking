@@ -35,7 +35,9 @@ const ModalCreateZone: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
                     <div className="fixed inset-0 transition-opacity"></div>
-                    <div className="z-50 h-[70%] w-[40%]  p-4 mx-auto bg-white rounded-md shadow-lg flex justify-center items-center gap-4">
+                    
+                    <div className="z-50 h-[70%] w-[40%] p-4 mx-auto bg-white rounded-md shadow-lg flex justify-center items-center gap-4 bg-cover bg-center" style={{backgroundImage:`url('/background.png')`}}>
+                        
                     
                         <section className="col-span-1 flex flex-col w-[70%]">
                             <div className="flex justify-start">
@@ -48,20 +50,14 @@ const ModalCreateZone: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
                                     <input
                                         type="text"
                                         placeholder="Nombre de zona"
-                                        className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
+                                        className="p-2 shadow-lg mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
                                         onChange={(event) => setName(event.target.value)} />
 
                                     <input
                                         type="text"
                                         placeholder="Estacionamientos totales"
-                                        className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
+                                        className="p-2 shadow-lg mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
                                         onChange={(event) => setCantEstacionamientosTotales(event.target.value)} />
-
-                                    <input
-                                        type="text"
-                                        placeholder="Estacionamientos ocupados"
-                                        className="p-2 mx-5 my-2 border border-gray-300 rounded-md text-black font-semibold w-full"
-                                        onChange={(event) => setCantEstacionamientosOcupados(event.target.value)} />
 
 
                                     <button className="bg-blue-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchZone(name, cantEstacionamientosTotales, cantEstacionamientosOcupados)}>Crear zona</button>

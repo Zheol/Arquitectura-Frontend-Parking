@@ -99,10 +99,18 @@ export default function LayoutCarDetails({
             </tr>
           </thead>
           <tbody>
-            {
+            { selectedZone == null ? 
+              (
+                <tr className='border-b-2 text-center'>
+                  <td colSpan={4}>Seleccione una zona para ver los detalles.</td>
+                </tr>
+              )
+            :
+            (
+
               slots.map((slot, index) => {
                 return (
-                 
+                  
                   <tr key={index} className='border-b-2 text-center'>
                       <td>{slot.aviable ? <p>{slot.patente}</p> : <p>-----------</p>}</td>
                       <td>{slot.aviable ? <p>{slot.llegada}</p> : <p>-----------</p>}</td>
@@ -115,6 +123,7 @@ export default function LayoutCarDetails({
                       </tr>
                 )
               })
+            )
             }
           </tbody>
         </table>
