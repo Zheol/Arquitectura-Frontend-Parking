@@ -5,8 +5,9 @@ import { BsFillBackspaceFill } from "react-icons/bs";
 import ModalSignin from './modal-sigin';
 import { useUserStore } from '@/store/UserStorage';
 
-
 import { useRouter } from 'next/navigation'
+import  Client from '@/apolloclient';
+import { gql } from '@apollo/client';
 
 
 
@@ -31,29 +32,41 @@ const ModalLogin = () => {
         setIsOpen(true);
         setIsModalSigninOpen(!isModalSigninOpen);
     };
-
+    const LOGIN_MUTATION = gql`
+        mutation login($email: String!, $password: String!) {
+            login(loginUserInput: { email: $email, password: $password }) {
+                token
+            }
+        }
+    `;
 
     const fetchLogin = async (email: string, password: string) => {
         setLoginLoading(true);
         setIsError(false);
         try {
-            const response = await axios.post(`https://backend-plataforma.onrender.com/api/login`, {
-                email: email,
-                password: password
+            const result = await Client.mutate({
+                mutation: LOGIN_MUTATION,
+                variables: {
+                    email: email,
+                    password: password
+                }
             });
-            console.log(response.data);
-            
-            setIdUser(response.data.id);
-            setEmailUser(response.data.email);
-            
-            // setToken(response.data.token);
+            const token = result.data.login.token; // prueba si no te recibe con result.data.token
+            //revisar si recibe bien el token
+            //con el token sacar la info del user
+            console.log("Token received: ", token);
 
-            console.log(response.data.role)
+            setToken(token);
+            
+            setIdUser(result.data.login.id);
+            setEmailUser(result.data.login.email);
+            // setToken(response.data.token);
+    
+            console.log(result.data.role)
             if(tipoUser == '1'){
                 router.push('/Admin/');
             }
             setLoginLoading(false);
-
         }
         catch (error) {
             setLoginLoading(false);
@@ -62,6 +75,7 @@ const ModalLogin = () => {
             console.log("Error: ", error);
         };
     };
+
 
     return (
         <>

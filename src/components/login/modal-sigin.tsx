@@ -4,11 +4,19 @@ import axios from "axios";
 import React, { useState } from "react";
 import { BsFillBackspaceReverseFill } from "react-icons/bs";
 import { useUserStore } from "@/store/UserStorage";
+import { gql, useMutation } from "@apollo/client";
 
 interface ModalSigninProps {
     isOpen: boolean;
     onClose: () => void;
 }
+const REGISTER_MUTATION = gql`
+  mutation Register($name: String!, $email: String!, $password: String!) {
+    createUser(createUserInput: { name: $name, email: $email, password: $password }) {
+      success
+    }
+  }
+`;
 
 const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
     const [name, setName] = useState<string>('');
@@ -16,6 +24,8 @@ const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
     const [password, setPassword] = useState<string>('');
 
     const { setIdUser, setEmailUser } = useUserStore();
+    
+    const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
 
     const handleClose = () => {
         onClose();
@@ -24,6 +34,33 @@ const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
     const openModalLogin = () => {
         onClose();
     }
+
+    const handleRegister = async () => {
+        try {
+          const { data } = await registerUser({
+            variables: {
+              name: name,
+              email: email,
+              password: password
+            }
+          });
+          if (data.createUser.success) {
+            //  Para manejar el éxito del registro
+            setIdUser(data.createUser.id);
+            setEmailUser(data.createUser.email);
+            handleClose();
+          } else {
+            // Caso de un registro fallido
+            console.error("Registro fallido");
+          }
+        } catch (error) {
+          // Manejar errores
+          console.error("Error al registrar:", error);
+        }
+      };
+
+    
+      /*
     const fetchSigin = async (name: string, email: string, password: string) => {
         try {
             const response = await axios.post(`https://backend-plataforma.onrender.com/api/register`, {
@@ -37,7 +74,7 @@ const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
         } catch (error) {
             console.log(error);
         }
-    }
+    }*/
 
     return (
         <>
@@ -67,7 +104,7 @@ const ModalSignin: React.FC<ModalSigninProps> = ({ isOpen, onClose }) => {
                                         onChange={(event) => setPassword(event.target.value)} />
 
 
-                                    <button className="bg-yellow-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={() => fetchSigin(name, email, password)}>Registrarse</button>
+                                    <button className="bg-yellow-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={handleRegister}>Registrarse</button>
                                     <button className="bg-blue-500 text-white p-2 m-2 rounded-md w-full font-bold" onClick={openModalLogin}>Iniciar sesion</button>
                             </div>
                         </div>
